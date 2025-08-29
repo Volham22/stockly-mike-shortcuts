@@ -1,41 +1,39 @@
 from collections import deque
 def mike_shortcuts(n: int, shortcuts: list[int]) -> list[int]:
-    mins = [(2**32 - 1) for _ in range(n)]
-    mins[0] = 0
-    queue = deque()
+    mins = [-1 for _ in range(n)]
+    queue: deque[tuple[int, int]] = deque()
     queue.append((0, 0))
 
     while len(queue) != 0:
         current_intersection, consumed_energy = queue.popleft()
-        mins[current_intersection] = min(mins[current_intersection], consumed_energy)
+        if mins[current_intersection] == -1:
+            mins[current_intersection] = consumed_energy
 
-        # Walk to next intersection
-        if (
-            current_intersection + 1 < n
-            and mins[current_intersection + 1] > consumed_energy + 1
-        ):
-            queue.append(
-                (
-                    current_intersection + 1,
-                    consumed_energy + 1,
+            # Walk to next intersection
+            if (
+                current_intersection + 1 < n
+            ):
+                queue.append(
+                    (
+                        current_intersection + 1,
+                        consumed_energy + 1,
+                    )
                 )
-            )
 
-        # Use shortcuts
-        if mins[shortcuts[current_intersection] - 1] > consumed_energy + 1:
+            # Use shortcuts
+            # if mins[shortcuts[current_intersection] - 1] > consumed_energy + 1:
             queue.append((shortcuts[current_intersection] - 1, consumed_energy + 1))
 
-        # Try to go back
-        if (
-            current_intersection - 1 > 0
-            and mins[current_intersection - 1] > consumed_energy + 1
-        ):
-            queue.append(
-                (
-                    current_intersection - 1,
-                    consumed_energy + 1,
+            # Try to go back
+            if (
+                current_intersection - 1 > 0
+            ):
+                queue.append(
+                    (
+                        current_intersection - 1,
+                        consumed_energy + 1,
+                    )
                 )
-            )
 
     return mins
 
