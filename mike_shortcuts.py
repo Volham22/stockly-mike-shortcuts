@@ -1,10 +1,12 @@
+from collections import deque
 def mike_shortcuts(n: int, shortcuts: list[int]) -> list[int]:
     mins = [(2**32 - 1) for _ in range(n)]
     mins[0] = 0
-    queue = [(0, 0)]
+    queue = deque()
+    queue.append((0, 0))
 
     while len(queue) != 0:
-        current_intersection, consumed_energy = queue.pop(0)
+        current_intersection, consumed_energy = queue.popleft()
         mins[current_intersection] = min(mins[current_intersection], consumed_energy)
 
         # Walk to next intersection
