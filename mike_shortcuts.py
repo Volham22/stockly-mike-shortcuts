@@ -11,7 +11,6 @@ def mike_shortcuts(n: int, shortcuts: list[int]) -> list[int]:
         if (
             current_intersection + 1 < n
             and mins[current_intersection + 1] > consumed_energy + 1
-            and consumed_energy + 1 < n
         ):
             queue.append(
                 (
